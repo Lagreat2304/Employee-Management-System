@@ -1,6 +1,18 @@
 const Employees = require('./Employees');
-const config = require('./dbConfig');
-
+require('dotenv').config();
+var config = {
+    user: process.env.USER,
+    password: process.env.PASSWORD,
+    server: process.env.SERVER,
+    database: process.env.DATABASE,
+    options: {
+      trustedconnection: false,
+      enableArithAbort: true,
+      trustServerCertificate: true,
+      instancename: process.env.INSTANCE,
+    },
+    port: parseInt(process.env.PORT,10)
+};
 
 const sql = require('mssql');
 const deleteemployee = async (employeeID) => {
