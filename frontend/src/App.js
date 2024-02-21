@@ -27,15 +27,12 @@ function App() {
 
   const fetchData = async() => {
     console.log(employee);
-    const newData = await fetch('https://employee-management-system-08vu.onrender.com/employeesearch',{
-      method : 'POST',
+    const newData = await fetch(`http://localhost:5000/employeesearch?name=${employee.EmployeeID}`,{
+      method : 'GET',
       headers : {
         'Content-Type' : 'application/json',
         'Accept' : 'application/json'
-      },
-      body : JSON.stringify({
-        name : employee.EmployeeID
-      })
+      }
     })
     .then(res => res.json())
     if(Array.isArray(newData)){
