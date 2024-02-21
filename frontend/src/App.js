@@ -27,7 +27,7 @@ function App() {
 
   const fetchData = async() => {
     console.log(employee);
-    const newData = await fetch('http://localhost:5000/employeesearch',{
+    const newData = await fetch('https://employee-management-system-08vu.onrender.com/employeesearch',{
       method : 'POST',
       headers : {
         'Content-Type' : 'application/json',
@@ -47,7 +47,7 @@ function App() {
   
   const updateemployee = async () => {
     try {
-      const newData = await fetch(`http://localhost:5000/employeeupdate/${selectedEmployee.EmployeeID}`, {
+      const newData = await fetch(`https://employee-management-system-08vu.onrender.com/employeeupdate/${selectedEmployee.EmployeeID}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ function App() {
       setErrorMessage('All fields are required.');
       return;
     }
-    const newData = await fetch('http://localhost:5000/employeeadd',{
+    const newData = await fetch('https://employee-management-system-08vu.onrender.com/employeeadd',{
       method : 'POST',
       headers : {
         'Content-Type' : 'application/json',
@@ -97,7 +97,7 @@ function App() {
 
 const deleteemployee = async (EmployeeId) => {
   try {
-    const newData = await fetch(`http://localhost:5000/employeedelete/${EmployeeId}`, {
+    const newData = await fetch(`https://employee-management-system-08vu.onrender.com/employeedelete/${EmployeeId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
