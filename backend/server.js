@@ -5,8 +5,14 @@ const cors = require('cors');
 const port = 5000;
 const app = express();
 
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://employeee.vercel.app');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept');
+    next();
+  });
+
 app.use(express.json());
-app.use(express.urlencoded());
 app.use(cors());
 require('dotenv').config();
 var config = {
@@ -23,7 +29,7 @@ var config = {
     port: process.env.PORT
 };
 
-app.post('/employeesearch', async(req,res) => {
+app.get('/employeesearch', async(req,res) => {
     console.log('called');
     const result = await dbOperation.getemployee(req.body.name);
     res.send(result.recordset);
