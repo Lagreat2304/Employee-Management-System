@@ -27,7 +27,7 @@ function App() {
 
   const fetchData = async() => {
     console.log(employee);
-    const newData = await fetch(`https://employee-management-system-08vu.onrender.com/employeesearch?name=${employee.EmployeeID}`,{
+    const newData = await fetch(`https://employee-management-system-yfip.onrender.com/employeesearch?name=${employee.EmployeeID}`,{
       method : 'GET',
       headers : {
         'Content-Type' : 'application/json',
@@ -44,7 +44,7 @@ function App() {
   
   const updateemployee = async () => {
     try {
-      const newData = await fetch(`https://employee-management-system-08vu.onrender.com/employeeupdate/${selectedEmployee.EmployeeID}`, {
+      const newData = await fetch(`https://employee-management-system-yfip.onrender.com/employeeupdate/${selectedEmployee.EmployeeID}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ function App() {
       setErrorMessage('All fields are required.');
       return;
     }
-    const newData = await fetch('https://employee-management-system-08vu.onrender.com/employeeadd',{
+    const newData = await fetch('https://employee-management-system-yfip.onrender.com/employeeadd',{
       method : 'POST',
       headers : {
         'Content-Type' : 'application/json',
@@ -94,7 +94,7 @@ function App() {
 
 const deleteemployee = async (EmployeeId) => {
   try {
-    const newData = await fetch(`https://employee-management-system-08vu.onrender.com/employeedelete/${EmployeeId}`, {
+    const newData = await fetch(`https://employee-management-system-yfip.onrender.com/employeedelete/${EmployeeId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
