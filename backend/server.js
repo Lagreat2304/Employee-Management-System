@@ -2,7 +2,6 @@ const express  = require('express');
 const Employees = require("./dbFiles/Employees");
 const dbOperation = require("./dbFiles/dbOperation");
 const cors = require('cors');
-const port = 5000;
 const app = express();
 
 app.use((req, res, next) => {
@@ -28,6 +27,7 @@ var config = {
     },
     port: process.env.PORT
 };
+const port = proces.env.PORT || 5000;
 
 app.get('/employeesearch', async(req,res) => {
     console.log('called');
@@ -65,4 +65,4 @@ app.delete('/employeedelete/:id', async (req, res) => {
         res.status(500).send({ error: 'Internal Server Error' });
     }
 });
-app.listen(port, ()=> console.log("Listening"));
+app.listen(port, ()=> console.log(`Listening at ${port)`));
