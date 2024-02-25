@@ -65,4 +65,5 @@ app.delete('/employeedelete/:id', async (req, res) => {
         res.status(500).send({ error: 'Internal Server Error' });
     }
 });
-app.listen(port, ()=> console.log(`Listening at ${port)`));
+
+app.listen(port, () => console.log(`Listening at ${port}`));
