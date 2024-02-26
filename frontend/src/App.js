@@ -3,6 +3,8 @@ import './App.css';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 //import employees from '../dbFiles/employees';
+import { Document, Page, Text, View, StyleSheet, PDFDownloadLink } from '@react-pdf/renderer';
+import * as XLSX from 'xlsx';
 
 function App() {
 
@@ -25,22 +27,90 @@ function App() {
     }));
   }
 
-  const fetchData = async() => {
-    console.log(employee);
-    const newData = await fetch(`https://employee-management-system-yfip.onrender.com/employeesearch?name=${employee.EmployeeID}`,{
-      method : 'GET',
-      headers : {
-        'Content-Type' : 'application/json',
-        'Accept' : 'application/json'
+  const fetchData = async () => {
+    try {
+      const response = await fetch(`https://employee-management-system-yfip.onrender.com/employeesearch?name=${employee.EmployeeID}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
       }
-    })
-    .then(res => res.json())
-    if(Array.isArray(newData)){
-      setReturnedData(newData);
-      setGetButtonClicked(true);
-      setSuccessMessage('Fetched Successfully!');
+      const newData = await response.json();
+      if (Array.isArray(newData)) {
+        setReturnedData(newData);
+        setGetButtonClicked(true);
+        setSuccessMessage('Fetched Successfully!');
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error.message);
+      setErrorMessage('Failed to fetch data. Please try again.');
     }
   };
+
+  const exportToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(returnedData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Employee Details');
+    XLSX.writeFile(workbook, 'employee_details.xlsx');
+  };
+  
+  const styles = StyleSheet.create({
+    page: {
+      flexDirection: 'column',
+      backgroundColor: '#E4E4E4',
+      padding: 10,
+    },
+    section: {
+      margin: 10,
+      padding: 10,
+      flexGrow: 1,
+    },
+    employee: {
+      marginBottom: 10,
+    },
+    boldText: {
+      fontWeight: 700
+    },
+
+    pdfDownloadButton: {
+      backgroundColor: '#4CAF50',
+      color: '#FFFFFF',
+      padding: '8px 16px',
+      borderRadius: '5px',
+      textDecoration: 'none',
+      fontSize: '14px',
+      fontWeight: 'bold',
+      cursor: 'pointer',
+    },
+  });
+  
+  const MyDocument = ({ employees }) => (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        <View style={styles.section}>
+          <Text>Employee Details</Text>
+          {employees.map((employee) => (
+            <View style={styles.employee} key={employee.EmployeeID}>
+              <Text style={styles.boldText}>Employee ID: </Text>
+            <Text>{employee.EmployeeID}</Text>
+              <Text>Employee Name: {employee.EmployeeName}</Text>
+              <Text>Department: {employee.Department}</Text>
+              <Text>Designation: {employee.Designation}</Text>
+              <Text>Salary: {employee.Salary}</Text>
+              <Text>Address: {employee.address}</Text>
+              <Text>Date of Birth: {employee.DOB}</Text>
+              <Text>Phone No: {employee.PhoneNo}</Text>
+            </View>
+          ))}
+        </View>
+      </Page>
+    </Document>
+  );
   
   const updateemployee = async () => {
     try {
@@ -256,7 +326,14 @@ const displayedEmployees = returnedData.slice(startIndex, endIndex);
         </button>
       </div>
       </div>
-    </div>
+      <br/>
+      <PDFDownloadLink document={<MyDocument employees={returnedData} />} fileName="employee_details.pdf" style={styles.pdfDownloadButton}>
+  {({ blob, url, loading, error }) =>
+    loading ? 'Loading document...' : 'Download PDF'
+  }
+</PDFDownloadLink>
+<button className='form-button' onClick={exportToExcel}>Download Excel</button>
+      </div>
   );
 }
 
